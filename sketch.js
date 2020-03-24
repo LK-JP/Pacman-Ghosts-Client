@@ -1,8 +1,15 @@
-Walls = []
+let Walls = []
+let Lindsay
+
+function keyPressed(event) {
+  Lindsay.move(event)
+}
+
 const createWalls = () => {
   const border = 10
   const path = 26
   let endOfLastWall
+  // TODO: change widths and height of obstacles to be a percentage of available space
   // obstacles
   // start top row --------------------------
   const topLeft = new Wall(border + path, border + path, 85, 35)
@@ -42,10 +49,12 @@ const createWalls = () => {
 function setup() {
   createCanvas(600, 700)
   createWalls()
+  Lindsay = new Pacman()
 }
 
 // draw is run on a continuous loop at a max frames per second of 60, and is generally used to create visuals within the canvas
 function draw() {
   background(62)
   Walls.forEach(wall => wall.show())
+  Lindsay.show()
 }

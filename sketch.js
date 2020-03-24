@@ -1,24 +1,41 @@
 Walls = []
 const createWalls = () => {
-  const scale = 10
- 
-  // bottom border
-  Walls.push(new Wall(0, height - scale, width, scale, 1))
+  const border = 10
+  const path = 26
+  let endOfLastWall
   // obstacles
-  Walls.push(new Wall(36, 36, 85, 35))
-  Walls.push(new Wall(147, 36, 115, 35))
-  Walls.push(new Wall(288 , 0 ,24, 71 ))
-  Walls.push(new Wall(width-121,36, 85, 35))
-  Walls.push(new Wall(width - 121-26-115, 36, 115, 35))
+  // start top row --------------------------
+  const topLeft = new Wall(border + path, border + path, 85, 35)
+  Walls.push(topLeft)
+  endOfLastWall = border + path + 85
+
+  const secondTopLeft = new Wall(endOfLastWall + path, border + path, 115, 35)
+  Walls.push(secondTopLeft)
+  endOfLastWall += path + 115
+
+  const middleTopThing = new Wall(endOfLastWall + path, 0, 24, 71)
+  Walls.push(middleTopThing)
+  endOfLastWall += path + 24
+
+  const secondTopRight = new Wall(endOfLastWall + path, border + path, 115, 35)
+  Walls.push(secondTopRight)
+  endOfLastWall += path + 115
+
+  const topRight = new Wall(endOfLastWall + path, border + path, 85, 35)
+  Walls.push(topRight)
+  endOfLastWall = undefined
+  //start second row -------------------------
 
   //---------------------------------------
-   // border
+  // border
   // top border
-  Walls.push(new Wall(0, 0, width, scale, 1))
+  Walls.push(new Wall(0, 0, width, border, 1))
   // left border
-  Walls.push(new Wall(0, 0, scale, height, 1))
+  Walls.push(new Wall(0, 0, border, height, 1))
   // right border
-  Walls.push(new Wall(width - scale, 0, scale, height, 1))
+  Walls.push(new Wall(width - border, 0, border, height, 1))
+  // bottom border
+  Walls.push(new Wall(0, height - border, width, border, 1))
 }
 
 // setup is run once on startup and is generally used to "set up" the canvas and any other necessary initial functions

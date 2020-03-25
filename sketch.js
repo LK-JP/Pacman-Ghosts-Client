@@ -1,8 +1,8 @@
 let Walls = []
-let Lindsay
+let pacMan
 
-function keyPressed(event) {
-  Lindsay.move(event)
+keyPressed = event => {
+  event.preventDefault()
 }
 
 const createWalls = () => {
@@ -49,12 +49,18 @@ const createWalls = () => {
 function setup() {
   createCanvas(600, 700)
   createWalls()
-  Lindsay = new Pacman()
+  pacMan = new Pacman()
 }
 
 // draw is run on a continuous loop at a max frames per second of 60, and is generally used to create visuals within the canvas
 function draw() {
+  if (keyIsPressed && !pacMan.checkOutOfBounds(Walls)) {
+    pacMan.changeDir()
+  }
   background(62)
   Walls.forEach(wall => wall.show())
-  Lindsay.show()
+  pacMan.checkIfHitWall(Walls)
+  pacMan.show()
+
+  pacMan.move()
 }

@@ -4,6 +4,7 @@ class Wall {
     this.y = y
     this.width = width
     this.height = height
+    // curved corners
     this.radius = radius || 10
   }
 
@@ -13,6 +14,6 @@ class Wall {
     rect(this.x, this.y, this.width, this.height, this.radius)
     fill(255)
     textAlign(LEFT, TOP)
-    text(`X:${this.x}, Width: ${this.width} `, this.x, this.y)
+    text(`Y:${this.y}, Height: ${this.height} `, this.x, this.y)
   }
 }

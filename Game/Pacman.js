@@ -1,11 +1,15 @@
 class Pacman {
   constructor() {
-    this.x = 300
-    this.y = 72
     this.size = 25
+    //start at grid[12][20]
+    this.x = 11*this.size
+    this.y = 19*this.size
+    
+    
   }
   show() {
-    circle(this.x, this.y + this.size / 2, this.size)
+    fill(255,0,0)
+    square(this.x, this.y, this.size)
   }
   move(event) {
     event.preventDefault()

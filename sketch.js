@@ -6,7 +6,7 @@ const scale = 25
 let Grid = new Array(cols)
 
 function keyPressed(event) {
-  pacman.move(event)
+pacman.changeDir(event)
 }
 
 
@@ -31,4 +31,6 @@ function draw() {
   background(62)
   Grid.forEach(col => col.forEach(cell => cell.show()))
   pacman.show()
+  pacman.tryToChangeDir()
+  pacman.move()
 }

@@ -32,5 +32,6 @@ function draw() {
   Grid.forEach(col => col.forEach(cell => cell.show()))
   pacman.show()
   pacman.tryToChangeDir()
+  pacman.portal()
   pacman.move()
 }

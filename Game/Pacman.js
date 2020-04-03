@@ -119,6 +119,7 @@ class Pacman {
   move() {
     // if this.y == center of board && this.x is one pixel over the right edge, just reset it to the left edge, and vise versa
     // console.log('i: ' + this.i, 'j: ' + this.j)
+
     if (this.dir === 'left' && this.notWall()) {
       this.x -= this.speed
       if (this.x % 25 === 0) {
@@ -155,5 +156,13 @@ class Pacman {
     } else if (keyCode === LEFT_ARROW) {
       this.nextDir = 'left'
     }
+  }
+
+  portal() {
+    if (this.dir === 'left' && this.x < 1 ){
+      this.x = width - this.size
+    } else if (this.dir === 'right' && this.x + this.size > width -1) {
+        this.x = this.size
+      }
   }
 }

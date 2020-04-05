@@ -1,6 +1,8 @@
 class Pacman {
   constructor() {
     this.size = 25
+    this.rotation = radians(180)
+    this.frame = 0
     //pacmans actual x and y
     this.x = 12 * this.size
     this.y = 19 * this.size
@@ -9,7 +11,7 @@ class Pacman {
     this.j = this.y / this.size
     //how many pixels pacman moves per frame. kept at a number evenly
     //divisible by 25
-    this.speed = 2.5
+    this.speed = 5
     this.dir = 'left'
     this.nextDir = undefined
 
@@ -23,7 +25,18 @@ class Pacman {
   // draw pacman as a square for now
   show() {
     fill(255, 0, 0)
-    square(this.x, this.y, this.size)
+    // draw the image x,y from the center of the rect
+    imageMode(CENTER)
+    //save the canvas state
+    push()
+    // center the canvas around the image
+    translate(this.x + this.size / 2, this.y + this.size / 2)
+    // rotate the canvas in order to rotate the pic
+    rotate(this.rotation)
+    //draw the pic
+    image(pacmanFrames[this.frame], 0, 0, this.size, this.size)
+    // go back to the saved canvas state
+    pop()
   }
 
   //notWall boolean function, returns true if directly in front pacmans current direction is not a wall
@@ -88,31 +101,38 @@ class Pacman {
   move() {
     const { speed, size, dir } = this
     if (dir === 'left' && this.notWall()) {
+      this.rotation = radians(180)
       this.x -= speed
       if (this.x % 25 === 0) {
         //same modulus logic here to allow wrapping when using portals
-          this.i = ((this.x / size)+ cols) % cols
+        this.i = (this.x / size + cols) % cols
       }
     } else if (dir === 'right' && this.notWall()) {
+      this.rotation = radians(0)
       this.x += speed
       if (this.x % 25 === 0) {
-          this.i = ((this.x / size)+ cols ) % cols
+        this.i = (this.x / size + cols) % cols
       }
     } else if (dir === 'up' && this.notWall()) {
+      this.rotation = radians(270)
       this.y -= speed
       if (this.y % 25 === 0) {
-        this.j = ((this.y / size) + rows ) % rows
+        this.j = (this.y / size + rows) % rows
       }
     } else if (dir === 'down' && this.notWall()) {
+      this.rotation = radians(90)
       this.y += speed
       if (this.y % 25 === 0) {
-        this.j = ((this.y / size)+ rows) % rows
+        this.j = (this.y / size + rows) % rows
       }
     }
     this.above = Grid[this.i][(this.j - 1 + rows) % rows]
     this.below = Grid[this.i][(this.j + 1 + rows) % rows]
     this.toRight = Grid[(this.i + 1 + cols) % cols][this.j]
     this.toLeft = Grid[(this.i - 1 + cols) % cols][this.j]
+    if (this.notWall()) {
+      this.frame = (this.frame + 1) % 20
+    }
   }
   // function used to change the next direction of pacman
   changeDir(event) {
@@ -129,12 +149,10 @@ class Pacman {
   }
 
   portal() {
-    if (this.dir === 'left' && this.x < - this.size ) {
-      this.x = width 
-     
-    } else if (this.dir === 'right' && this.x  > width) {
+    if (this.dir === 'left' && this.x < -this.size) {
+      this.x = width
+    } else if (this.dir === 'right' && this.x > width) {
       this.x = -this.size
-      
     }
   }
 

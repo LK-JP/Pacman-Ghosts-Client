@@ -5,8 +5,6 @@ const cols = 23
 const rows = 27
 const scale = 25
 
-let Grid = new Array(cols)
-
 let pacmanImg
 let pacmanFrames = []
 
@@ -28,27 +26,21 @@ function setup() {
   createCanvas(575, 675)
   //frameRate changed for easier animations and movement speed changes
   frameRate(30)
-  for (let i = 0; i < 5; i++) {
-    for (let j = 0; j < 4; j++) {
-      let frame = pacmanImg.get(j * 32, i * 32, 32, 32)
-      pacmanFrames.push(frame)
-    }
-  }
 
-  for (i = 0; i < Grid.length; i++) {
-    Grid[i] = new Array(rows)
-  }
-
-  for (let i = 0; i < cols; i++) {
-    for (let j = 0; j < rows; j++) {
-      Grid[i][j] = new Cell(i * scale, j * scale, LevelOne[i][j])
-    }
-  }
-  //create new pacman
-  pacman = new Pacman()
+   // animation setup 
+  animationSetUp()
 
   //create new game
   game = new Game()
+
+  // game board set up
+  game.setupGrid()
+  game.grid[10][5].dot = true
+ 
+  //create new pacman
+  pacman = new Pacman(game.grid)
+
+
 
     // get the button
 
@@ -56,25 +48,35 @@ function setup() {
     // startButton.position(windowWidth/2-50, windowHeight/2)
     startButton.mousePressed( () => game.start())
     
-    // button = createButton('click me');
-    //   button.position(19, 19);
-    //   button.mousePressed(changeBG);
+}
+
+
+
+function animationSetUp() {
+  for (let i = 0; i < 5; i++) {
+    for (let j = 0; j < 4; j++) {
+      let frame = pacmanImg.get(j * 32, i * 32, 32, 32)
+      pacmanFrames.push(frame)
+    }
+  }
 }
 
 // draw is run on a continuous loop at a max frames per second of 60, and is generally used to create visuals within the canvas
 function draw() {
   background(62)
   if(game.playing){
-  Grid.forEach(col => col.forEach(cell => cell.show()))
+  game.show()
   pacman.show()
   pacman.tryToChangeDir()
   pacman.portal()
   pacman.move()
   pacman.eat(game)
+  game.finishGame()
   fill(255)
   text(`Score: ${game.score}`, 10, 10)
-  removeElements()
+  startButton.hide()
 }else {
+  startButton.show()
   background(0)
   push()
   textAlign(CENTER)

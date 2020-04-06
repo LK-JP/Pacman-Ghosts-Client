@@ -3,7 +3,7 @@ class Cell {
     this.x = x
     this.y = y
     this.wall = wall
-    this.dot = !wall
+    this.dot = false
   }
 
   show() {

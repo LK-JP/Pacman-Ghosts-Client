@@ -1,16 +1,15 @@
 class Game {
   constructor() {
-   this.lives = 3
-   this.score = 0
-   this.level = LevelOne
-   this.gameOver = false
-   this.playing =  false
-   this.won = false
-   this.grid = []
+    this.lives = 3
+    this.score = 0
+    this.level = LevelOne
+    this.gameOver = false
+    this.playing = false
+    this.won = false
+    this.grid = []
   }
 
-   setupGrid() {
-   
+  setupGrid() {
     this.grid = new Array(cols)
     for (let i = 0; i < this.grid.length; i++) {
       this.grid[i] = new Array(rows)
@@ -21,8 +20,12 @@ class Game {
       }
     }
   }
+  restart() {
+    this.setupGrid()
+    this.start()
+  }
 
-  start(){
+  start() {
     this.playing = true
     this.gameOver = false
     this.won = false
@@ -30,7 +33,7 @@ class Game {
     this.lives = 3
   }
 
-  loseALife(){
+  loseALife() {
     this.lives--
   }
 
@@ -39,16 +42,17 @@ class Game {
   }
 
   finishGame() {
-  if(this.lives === 0){
+    const gotAllDots = this.grid.every(col => col.every(cell => !cell.dot))
+    if (this.lives === 0) {
       this.gameOver = true
       this.playing = false
-    } else if (this.grid.every(col => col.every(cell => !cell.dot))){
+    } else if (gotAllDots) {
       this.gameOver = true
       this.playing = false
       this.won = true
     }
   }
-show(){
-  this.grid.forEach(col => col.forEach(cell => cell.show()))
-}
+  show() {
+    this.grid.forEach(col => col.forEach(cell => cell.show()))
+  }
 }

@@ -1,8 +1,7 @@
 class Pacman {
-  constructor(grid) {
+  constructor(grid, size) {
     this.grid = grid
-
-    this.size = 25
+    this.size = size
     this.rotation = radians(180)
     this.frame = 0
     //pacmans actual x and y
@@ -161,7 +160,7 @@ class Pacman {
   eat(game) {
     if (this.grid[this.i][this.j].dot) {
       this.grid[this.i][this.j].dot = false
-      game.updateScore(10) 
+      game.updateScore(10)
     }
   }
 }

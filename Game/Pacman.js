@@ -156,10 +156,10 @@ class Pacman {
     }
   }
 
-  eat() {
+  eat(game) {
     if (Grid[this.i][this.j].dot) {
       Grid[this.i][this.j].dot = false
-      score += 10
+      game.updateScore(10) 
     }
   }
 }

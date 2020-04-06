@@ -1,5 +1,7 @@
 class Pacman {
-  constructor() {
+  constructor(grid) {
+    this.grid = grid
+
     this.size = 25
     this.rotation = radians(180)
     this.frame = 0
@@ -17,10 +19,10 @@ class Pacman {
 
     // vars used to keep track of pacmans surroundings
     // modulus is used to wrap pacman around the board without causing errors
-    this.above = Grid[this.i][(this.j - 1 + rows) % rows]
-    this.below = Grid[this.i][(this.j + 1 + rows) % rows]
-    this.toRight = Grid[(this.i + 1 + cols) % cols][this.j]
-    this.toLeft = Grid[(this.i - 1 + cols) % cols][this.j]
+    this.above = this.grid[this.i][(this.j - 1 + rows) % rows]
+    this.below = this.grid[this.i][(this.j + 1 + rows) % rows]
+    this.toRight = this.grid[(this.i + 1 + cols) % cols][this.j]
+    this.toLeft = this.grid[(this.i - 1 + cols) % cols][this.j]
   }
   // draw pacman as a square for now
   show() {
@@ -126,10 +128,10 @@ class Pacman {
         this.j = (this.y / size + rows) % rows
       }
     }
-    this.above = Grid[this.i][(this.j - 1 + rows) % rows]
-    this.below = Grid[this.i][(this.j + 1 + rows) % rows]
-    this.toRight = Grid[(this.i + 1 + cols) % cols][this.j]
-    this.toLeft = Grid[(this.i - 1 + cols) % cols][this.j]
+    this.above = this.grid[this.i][(this.j - 1 + rows) % rows]
+    this.below = this.grid[this.i][(this.j + 1 + rows) % rows]
+    this.toRight = this.grid[(this.i + 1 + cols) % cols][this.j]
+    this.toLeft = this.grid[(this.i - 1 + cols) % cols][this.j]
     if (this.notWall()) {
       this.frame = (this.frame + 1) % 20
     }
@@ -156,10 +158,10 @@ class Pacman {
     }
   }
 
-  eat() {
-    if (Grid[this.i][this.j].dot) {
-      Grid[this.i][this.j].dot = false
-      score += 10
+  eat(game) {
+    if (this.grid[this.i][this.j].dot) {
+      this.grid[this.i][this.j].dot = false
+      game.updateScore(10) 
     }
   }
 }

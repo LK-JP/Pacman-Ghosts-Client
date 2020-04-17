@@ -1,3 +1,23 @@
+// reference indexes
+const WHITE = 0
+const BLUE = 1
+const BLINKY = 2
+const INKY = 3
+const PINKY = 4
+const MIKE = 5
+
+//actual arrays of images 
+const leftImages = []
+const rightImages = [] 
+const downImages = []
+const upImages = [] 
+
+// spriteSheets
+let rightGhosts
+let leftGhosts
+let upGhosts
+let downGhosts
+
 let game
 let pacman
 let startButton
@@ -22,6 +42,10 @@ function keyPressed(event) {
 
 function preload() {
   pacmanImg = loadImage('./images/pacmanSpritesheet2.png')
+  rightGhosts = loadImage('./images/Right Ghosts.png')
+  upGhosts = loadImage('./images/Up Ghosts.png')
+  leftGhosts = loadImage('./images/Left Ghosts.png')
+  downGhosts = loadImage('./images/Down Ghosts.png')
 }
 
 // setup is run once on startup and is generally used to "set up" the canvas and any other necessary initial functions
@@ -43,7 +67,12 @@ function setup() {
 
   //create new pacman
   pacman = new Pacman(game.grid, scale, 12, 19)
-  ghosts[0] =  new Ghost(game.grid, scale, 11,11)
+  //TODO: Rethink starting positions
+  for (let i = 0; i < 2; i++){
+    for (let j = 0; j < 2; j++){
+      ghosts.push(new Ghost(game.grid, scale,11 + i, 11 + j))
+    }
+  }
 
   // get the button
 
@@ -55,17 +84,27 @@ function setup() {
   // resetButton.position(windowWidth/2-50, windowHeight/2)
   resetButton.mousePressed(() => {
     game.restart()
-    pacman = new Pacman(game.grid, scale,12,19)
+    pacman = new Pacman(game.grid, scale, 12, 19)
   })
   resetButton.hide()
 }
 
 // creates sprite array for pacman
 function animationSetUp() {
+  // Pacman's frames
   for (let i = 0; i < 5; i++) {
     for (let j = 0; j < 4; j++) {
       let frame = pacmanImg.get(j * 32, i * 32, 32, 32)
       pacmanFrames.push(frame)
+    }
+  }
+
+  for (let i = 0; i < 3; i++){
+    for (let j = 0; j < 2; j++){
+      leftImages.push(leftGhosts.get(j * 32, i * 32, 32, 32))
+      rightImages.push(rightGhosts.get(j * 32, i * 32, 32, 32))
+      upImages.push(upGhosts.get(j * 32, i * 32, 32, 32))
+      downImages.push(downGhosts.get(j * 32, i * 32, 32, 32))
     }
   }
 }
@@ -79,24 +118,24 @@ function draw() {
     showPlayGame()
   } else if (!game.gameOver) {
     showStartScreen()
-  } else if (game.gameOver){
+  } else if (game.gameOver) {
     showGameOver()
   }
 }
 
-function showGameOver(){
-    resetButton.show()
-    background(0)
-    push()
-    textAlign(CENTER)
-    textSize(16)
-    fill(255)
-    text(
-      `You lost! Final score was ${game.score}. Click restart to play again`,
-      width / 2,
-      height / 3
-    )
-    pop()
+function showGameOver() {
+  resetButton.show()
+  background(0)
+  push()
+  textAlign(CENTER)
+  textSize(16)
+  fill(255)
+  text(
+    `You lost! Final score was ${game.score}. Click restart to play again`,
+    width / 2,
+    height / 3
+  )
+  pop()
 }
 
 function showStartScreen() {

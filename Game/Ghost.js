@@ -1,6 +1,7 @@
 class Ghost extends Player {
   constructor(grid, size, x, y) {
     super(grid, size, x, y)
+    this.score = 0
   }
 
   show() {
@@ -8,6 +9,7 @@ class Ghost extends Player {
     rectMode(CENTER)
     fill(255, 0, 0)
     rect(this.x + this.size / 2, this.y + this.size / 2, this.size, this.size)
+
     pop()
   }
 
@@ -38,6 +40,7 @@ class Ghost extends Player {
       game.loseALife()
       pacman.reset()
       this.reset()
+      this.score ++ 
     }
   }
 }

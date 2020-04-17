@@ -6,6 +6,8 @@ let cols
 let rows
 const scale = 25
 
+const ghosts = []
+
 let pacmanImg
 let pacmanFrames = []
 
@@ -15,6 +17,7 @@ function windowResized() {
 
 function keyPressed(event) {
   pacman.changeDir(event)
+  ghosts[0].changeDir(event)
 }
 
 function preload() {
@@ -39,7 +42,8 @@ function setup() {
   game.setupGrid()
 
   //create new pacman
-  pacman = new Pacman(game.grid, scale)
+  pacman = new Pacman(game.grid, scale, 12, 19)
+  ghosts[0] =  new Ghost(game.grid, scale, 11,11)
 
   // get the button
 
@@ -51,7 +55,7 @@ function setup() {
   // resetButton.position(windowWidth/2-50, windowHeight/2)
   resetButton.mousePressed(() => {
     game.restart()
-    pacman = new Pacman(game.grid, scale)
+    pacman = new Pacman(game.grid, scale,12,19)
   })
   resetButton.hide()
 }
@@ -108,11 +112,8 @@ function showStartScreen() {
 
 function showPlayGame() {
   game.show()
-  pacman.show()
-  pacman.tryToChangeDir()
-  pacman.portal()
-  pacman.move()
-  pacman.eat(game)
+  pacman.play(game)
+  ghosts.forEach(ghost => ghost.play(pacman, game))
   game.finishGame()
   fill(255)
   text(`Score: ${game.score}`, 10, 10)

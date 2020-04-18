@@ -122,7 +122,7 @@ class Player {
   }
   // function used to change the next direction of pacman
   changeDir(event) {
-    event.preventDefault()
+   event.preventDefault()
     if (keyCode === UP_ARROW) {
       this.nextDir = 'up'
     } else if (keyCode === DOWN_ARROW) {
@@ -132,6 +132,9 @@ class Player {
     } else if (keyCode === LEFT_ARROW) {
       this.nextDir = 'left'
     }
+  }
+  changeDirectionFromSocket (direction) {
+    this.nextDir = direction
   }
 
   portal() {

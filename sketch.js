@@ -1,3 +1,4 @@
+
 // reference indexes
 
 const WHITE = 0
@@ -48,8 +49,16 @@ function windowResized() {
 
 function keyPressed(event) {
   pacman.changeDir(event)
+  socket.emit('move player', pacman.nextDir)
   ghosts.forEach(ghost => ghost.changeDir(event))
 }
+
+socket.on('move player', function (direction) {
+  console.log('recieved socket', direction)
+  if(pacman){
+  pacman.changeDirectionFromSocket(direction)
+}
+})
 
 function preload() {
   pacmanImg = loadImage('./images/pacmanSpritesheet2.png')

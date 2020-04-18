@@ -1,31 +1,56 @@
 class Ghost extends Player {
-  constructor(grid, size, x, y) {
+  constructor(grid, size, x, y, name) {
     super(grid, size, x, y)
     this.score = 0
+    this.dir = 'up'
+    this.name = name
+    this.start = {
+      i: this.x / this.size,
+      j: this.y / this.size,
+    }
   }
 
   show() {
-    push()
-    rectMode(CENTER)
-    fill(255, 0, 0)
-    rect(this.x + this.size / 2, this.y + this.size / 2, this.size, this.size)
-
-    pop()
+    let ghostIMG
+    switch (this.dir) {
+      case 'left':
+        ghostIMG = leftImages[this.name]
+        break;
+      case'right':
+        ghostIMG  = rightImages[this.name]
+        break;
+      case 'up':
+        ghostIMG = upImages[this.name]
+        break;
+      case 'down':
+        ghostIMG = downImages[this.name]
+        break;
+      default:
+        ghostIMG = upImages[this.name]
+        break;
+    }
+    image(
+      ghostIMG,
+      this.x + this.size / 2,
+      this.y + this.size / 2,
+      this.size,
+      this.size
+    )
   }
 
-  play(pacman, game) {
+  play(pacman, game, ghosts) {
     this.show()
     this.tryToChangeDir()
     this.portal()
     this.move()
-    this.spookieAttack(pacman, game)
+    this.spookieAttack(pacman, game, ghosts)
   }
 
   reset() {
-    this.x = 11 * this.size
-    this.y = 11 * this.size
-    this.i = this.x / this.size
-    this.j = this.y / this.size
+    this.x = this.start.i * this.size
+    this.y = this.start.j * this.size
+    this.i = this.start.i
+    this.j = this.start.j
     this.dir = 'left'
     this.nextDir = undefined
 
@@ -39,8 +64,8 @@ class Ghost extends Player {
     if (this.i === pacman.i && this.j === pacman.j) {
       game.loseALife()
       pacman.reset()
-      this.reset()
-      this.score ++ 
+      ghosts.forEach(ghost => ghost.reset())
+      this.score++
     }
   }
 }

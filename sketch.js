@@ -1,4 +1,5 @@
 // reference indexes
+
 const WHITE = 0
 const BLUE = 1
 const BLINKY = 2
@@ -6,11 +7,20 @@ const INKY = 3
 const PINKY = 4
 const MIKE = 5
 
-//actual arrays of images 
+const NAMES = {
+  0: WHITE,
+  1: BLUE,
+  2: BLINKY,
+  3: INKY,
+  4: PINKY,
+  5: MIKE,
+}
+
+//actual arrays of images
 const leftImages = []
-const rightImages = [] 
+const rightImages = []
 const downImages = []
-const upImages = [] 
+const upImages = []
 
 // spriteSheets
 let rightGhosts
@@ -33,11 +43,12 @@ let pacmanFrames = []
 
 function windowResized() {
   startButton.center()
+  resetButton.center()
 }
 
 function keyPressed(event) {
   pacman.changeDir(event)
-  ghosts[0].changeDir(event)
+  ghosts.forEach(ghost => ghost.changeDir(event))
 }
 
 function preload() {
@@ -67,12 +78,9 @@ function setup() {
 
   //create new pacman
   pacman = new Pacman(game.grid, scale, 12, 19)
+
   //TODO: Rethink starting positions
-  for (let i = 0; i < 2; i++){
-    for (let j = 0; j < 2; j++){
-      ghosts.push(new Ghost(game.grid, scale,11 + i, 11 + j))
-    }
-  }
+  createGhosts()
 
   // get the button
 
@@ -89,6 +97,17 @@ function setup() {
   resetButton.hide()
 }
 
+function createGhosts() {
+  const startIndex = 2
+  let index = startIndex
+  for (let i = 0; i < 2; i++) {
+    for (let j = 0; j < 2; j++) {
+      ghosts.push(new Ghost(game.grid, scale, 11 + i, 11 + j, NAMES[index]))
+      index++
+    }
+  }
+}
+
 // creates sprite array for pacman
 function animationSetUp() {
   // Pacman's frames
@@ -99,8 +118,8 @@ function animationSetUp() {
     }
   }
 
-  for (let i = 0; i < 3; i++){
-    for (let j = 0; j < 2; j++){
+  for (let i = 0; i < 3; i++) {
+    for (let j = 0; j < 2; j++) {
       leftImages.push(leftGhosts.get(j * 32, i * 32, 32, 32))
       rightImages.push(rightGhosts.get(j * 32, i * 32, 32, 32))
       upImages.push(upGhosts.get(j * 32, i * 32, 32, 32))
@@ -152,7 +171,7 @@ function showStartScreen() {
 function showPlayGame() {
   game.show()
   pacman.play(game)
-  ghosts.forEach(ghost => ghost.play(pacman, game))
+  ghosts.forEach(ghost => ghost.play(pacman, game, ghosts))
   game.finishGame()
   fill(255)
   text(`Score: ${game.score}`, 10, 10)
